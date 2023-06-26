@@ -3,3 +3,10 @@
 ################################################################################
 
 /Lvmendes.Adm.ApiAdm/bin/Debug/net6.0
+/Lvmendes.Adm.ApiAdm/obj
+/Lvmendes.Adm.Entidade/bin/Debug/net6.0
+/Lvmendes.Adm.Entidade/obj
+/Lvmendes.Adm.Repositorio/bin/Debug/net6.0
+/Lvmendes.Adm.Repositorio/obj
+/Lvmendes.Adm.Servico/bin/Debug/net6.0
+/Lvmendes.Adm.Servico/obj
