@@ -1,94 +1,25 @@
-
-# Este fluxo de trabalho criará e enviará uma nova imagem de contêiner para o Amazon ECR,
-# e, em seguida, implantará uma nova definição de tarefa no Amazon ECS, quando houver um push para a ramificação "principal".
-#
-# Para usar este fluxo de trabalho, você precisará concluir as seguintes etapas de configuração:
-#
-# 1. Crie um repositório ECR para armazenar suas imagens.
-# Por exemplo: `aws ecr create-repository --repository-name my-ecr-repo --region us-east-2`.
-# Substitua o valor da variável de ambiente `ECR_REPOSITORY` no fluxo de trabalho abaixo pelo nome do seu repositório.
-# Substitua o valor da variável de ambiente `AWS_REGION` no fluxo de trabalho abaixo pela região do seu repositório.
-#
-# 2. Crie uma definição de tarefa ECS, um cluster ECS e um serviço ECS.
-# Por exemplo, siga o guia Getting Started no console ECS:
-# https://us-east-2.console.aws.amazon.com/ecs/home?region=us-east-2#/firstRun
-# Substitua o valor da variável de ambiente `ECS_SERVICE` no fluxo de trabalho abaixo pelo nome que você definiu para o serviço Amazon ECS.
-# Substitua o valor da variável de ambiente `ECS_CLUSTER` no fluxo de trabalho abaixo pelo nome que você definiu para o cluster.
-#
-# 3. Armazene sua definição de tarefa do ECS como um arquivo JSON em seu repositório.
-# O formato deve seguir a saída de `aws ecs register-task-definition --generate-cli-skeleton`.
-# Substitua o valor da variável de ambiente `ECS_TASK_DEFINITION` no fluxo de trabalho abaixo pelo caminho para o arquivo JSON.
-# Substitua o valor da variável de ambiente `CONTAINER_NAME` no workflow abaixo pelo nome do container
-# na seção `containerDefinitions` da definição da tarefa.
-#
-# 4. Armazene uma chave de acesso do usuário IAM nos segredos do GitHub Actions denominados `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY`.
-# Consulte a documentação de cada ação usada abaixo para as políticas IAM recomendadas para este usuário IAM,
-# e melhores práticas para lidar com as credenciais da chave de ac
-
-
-name: Deploy to Amazon ECS
-
+name: Push-to-EC2
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
-env:
-  AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: apiteste           # set this to your Amazon ECR repository name
-  ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-                                               # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
-                                               # containerDefinitions section of your task definition
-
-permissions:
-  contents: read
 
 jobs:
   deploy:
-    name: Deploy
+    name: Deploy to EC2
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
-    - name: Checkout
+    - name: Checkout the files
       uses: actions/checkout@v3
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: AKIA6BKLAXXT2M4SNBE7
-        aws-secret-access-key: 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
-        aws-region: us-east-1
-
-   
-
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
+    - name: Copy files with SSH
+      uses: easingthemes/ssh-deploy@main
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
-
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ env.ECS_SERVICE }}
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
+        SSH_PRIVATE_KEY: ${{secrets.EC2_SSH_KEY}}
+        #ARGS: "-rltgoDzvO --delete"
+        SOURCE: "./"
+        REMOTE_HOST: "ec2-54-158-188-157.compute-1.amazonaws.com"
+        REMOTE_USER: "user-terraform-ec2"
+        TARGET: "/home/user-terraform-ec2"

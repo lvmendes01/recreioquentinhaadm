@@ -63,6 +63,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{29166E7A-8E07-45E5-AD1C-BC6E5761512A}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\pipeline.yml = .github\workflows\pipeline.yml
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
