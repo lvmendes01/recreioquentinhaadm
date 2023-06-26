@@ -17,15 +17,11 @@ jobs:
     - name: Copy files with SSH
       uses: easingthemes/ssh-deploy@main
       env:
-
-        aws-access-key-id: "AKIA6BKLAXXT2M4SNBE7"
-        aws-secret-access-key: "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"
-
-        #SSH_PRIVATE_KEY: ${{secrets.EC2_SSH_KEY}}
+        SSH_PRIVATE_KEY: ${{secrets.EC2_SSH_KEY}}
         #ARGS: "-rltgoDzvO --delete"
         SOURCE: "./"
         REMOTE_HOST: "ec2-54-158-188-157.compute-1.amazonaws.com"
-        #REMOTE_USER: "user-terraform-ec2"
+        REMOTE_USER: "user-terraform-ec2"
         TARGET: "/home/user-terraform-ec2"
 
 
