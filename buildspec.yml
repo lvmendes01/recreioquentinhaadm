@@ -8,7 +8,8 @@ phases:
     commands:
       - echo Build started on `date`
       - export BUCKET=recreioquentinha #or use a different bucket other than your codepipeline bucket
-      - aws cloudformation package --template-file template.yml --s3-bucket $BUCKET --output-template-file outputtemplate.yml --debug
+      - aws cloudformation package --debug --template-file template.yml --s3-bucket recreioquentinha --output-template-file outputtemplate.yml
+
 artifacts:
     files:
      - template.yml
