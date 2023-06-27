@@ -58,14 +58,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elastic", "Elastic", "{1E7D
 		provider.tf = provider.tf
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{CF16BC3D-92B1-4EBE-B309-7BBE0A629DF0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{29166E7A-8E07-45E5-AD1C-BC6E5761512A}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\pipeline.yml = .github\workflows\pipeline.yml
-		README.md = README.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,7 +90,6 @@ Global
 		{C1FD8D5C-7609-4874-BB29-FA19F3DEA50A} = {6591F4DA-5312-4D54-AD23-1FBD8FE966AD}
 		{01F64C5E-B6B3-4EB8-BDB3-6CB7CE15098E} = {6591F4DA-5312-4D54-AD23-1FBD8FE966AD}
 		{1E7DF1F4-EABE-4519-B930-E126CA557C38} = {6591F4DA-5312-4D54-AD23-1FBD8FE966AD}
-		{29166E7A-8E07-45E5-AD1C-BC6E5761512A} = {CF16BC3D-92B1-4EBE-B309-7BBE0A629DF0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B55DD8F8-A827-4EF8-92C8-91BBC3D83BB5}
