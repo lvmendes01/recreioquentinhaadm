@@ -20,10 +20,9 @@ phases:
   post_build:
     commands:
       - echo Publish started on `date`
-      # https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/dotnet-linux-platform-bundle-app.html
-      - export BUCKET=recreioquentinha #or use a different bucket other than your codepipeline bucket
+      - export BUCKET=recreioquentinha
       - dotnet publish -c release -o ./build_output Lvmendes.Adm.ApiAdm/Lvmendes.Adm.ApiAdm.csproj
-      - aws cloudformation package --template-file template.yml --s3-bucket recreioquentinha --output-template-file outputtemplate.yml --debug
+      - aws cloudformation package --template /build_output/template.yml --s3-bucket recreioquentinha \ --output-template-file outputtemplate.yml --debug --use-json
       
 
 artifacts:
