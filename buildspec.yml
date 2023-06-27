@@ -21,11 +21,12 @@ phases:
     commands:
       - echo Publish started on `date`
       # https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/dotnet-linux-platform-bundle-app.html
-      - dotnet publish -c Release -r linux-x64 --self-contained false Api.csproj
       - export BUCKET=recreioquentinha #or use a different bucket other than your codepipeline bucket
+      - dotnet publish -c release -o ./build_output Lvmendes.Adm.ApiAdm.csproj
       
 
 artifacts:
   files:
     - "**/*"
-   
+ 
+
