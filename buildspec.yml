@@ -3,12 +3,12 @@ phases:
   pre_build:
     commands:
       - echo Restore started on `date`
-      - dotnet restore Lvmendes.Adm.ApiAdm.csproj.csproj
+      - dotnet restore Lvmendes.Adm.ApiAdm/Lvmendes.Adm.ApiAdm.csproj
   build:
     commands:
       - echo Build started on `date`
       - export BUCKET=recreioquentinha #or use a different bucket other than your codepipeline bucket
-      - dotnet publish -c release -o ./build_output Lvmendes.Adm.ApiAdm.csproj
+      - dotnet publish -c release -o ./build_output Lvmendes.Adm.ApiAdm/Lvmendes.Adm.ApiAdm.csproj
 artifacts:
   files:
     - CodeBuild-Lvmendes/build_output/**/*
