@@ -1,38 +1,18 @@
 version: 0.2
-
-env:
-
-    shell: bash
-
 phases:
-
-    install:
-
-        runtime-versions:
-
-            nodejs: 16
-
-        commands:
-
-            - npm install -g typescript
-
-            - pip install --upgrade pip
-
-    build:
-
-        commands:
-
-            - echo deploy started on `date`
-
-            - export BUCKET=recreioquentinha #or use a different bucket other than your codepipeline bucket
-
-            - aws cloudformation package --template-file template.yml --s3-bucket $BUCKET --output-template-file outputtemplate.yml --debug
-
+  pre_build:
+    commands:
+      - echo Restore started on `date`
+      - dotnet restore SampleCore.csproj
+  build:
+    commands:
+      - echo Build started on `date`
+      - export BUCKET=recreioquentinha #or use a different bucket other than your codepipeline bucket
+      - dotnet publish -c release -o ./build_output SampleCore.csproj
 artifacts:
-
-
-    files:
-
-        - template.yml
-
-        - outputtemplate.yml
+  files:
+    - CodeBuild-SampleCore/build_output/**/*
+    - scripts/**/*
+    - appspec.yml
+   
+ 
