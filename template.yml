@@ -1,22 +1,31 @@
-AWSTemplateFormatVersion: "2010-09-09"
-Transform: AWS::Serverless-2016-10-31
+version: 0.0
+os: linux
+files:
+  - source: CodeBuild-SampleCore/build_output
+    destination: /home/ec2-user/aspnetcoreapp
+  - source: scripts/virtualhost.conf
+    destination: /home/ec2-user/aspnetcoreapp
+hooks:
+  ApplicationStop:
+    - location: scripts/stop_service
+      timeout: 300
+      runas: root
 
-Globals:
-  Function:
-    Runtime: nodejs16.x
-    Tracing: Active
-    Environment:
-      Variables:
-        region: "us-east-1"
+  BeforeInstall:
+    - location: scripts/remove_application
+      timeout: 300
+      runas: root
 
-Resources:
-  LambdaExample:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: ./
-      Handler: index.handler
-      FunctionName: "Repo_Name"
-      Description: Description
-      MemorySize: 512
-      Timeout: 30
-      Role: arn:aws:iam::xxxxxxxxxxxx:role/CodePipelineRole #a more limiting role may be appropriate
+  AfterInstall:
+    - location: scripts/install_dotnetcore
+      timeout: 500
+      runas: root
+
+    - location: scripts/install_httpd
+      timeout: 300
+      runas: root
+
+  ApplicationStart:
+    - location: scripts/start_service
+      timeout: 300
+      runas: root
