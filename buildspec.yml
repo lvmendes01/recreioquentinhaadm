@@ -1,17 +1,31 @@
 ﻿version: 0.2
 phases:
+  install:
+    runtime-versions:
+      dotnet: latest
+    commands:
+      - echo Installing Entity Framework Core tools reference - .NET CLI
+      - dotnet tool install --global dotnet-ef
+
   pre_build:
     commands:
       - echo Restore started on `date`
       - dotnet restore Lvmendes.Adm.ApiAdm/Lvmendes.Adm.ApiAdm.csproj
   build:
     commands:
-      - echo Build started on `date`
+      - echo Build started on `date`      
+      - dotnet build Lvmendes.Adm.ApiAdm/Lvmendes.Adm.ApiAdm.csproj
+
+     
+  post_build:
+    commands:
+      - echo Publish started on `date`
+      # https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/dotnet-linux-platform-bundle-app.html
+      - dotnet publish -c Release -r linux-x64 --self-contained false Api.csproj
       - export BUCKET=recreioquentinha #or use a different bucket other than your codepipeline bucket
-      - dotnet publish -c release -o ./build_output Lvmendes.Adm.ApiAdm/Lvmendes.Adm.ApiAdm.csproj
-      - aws cloudformation package --template template.json --s3-bucket recreioquentinha --output-template outputtemplate.json --debug
+      
+
 artifacts:
   files:
-    - template.json
-    - outputtemplate.json  
+    - "**/*"
    
