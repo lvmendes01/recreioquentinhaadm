@@ -22,11 +22,8 @@ phases:
       - echo Publish started on `date`
       - export BUCKET=recreioquentinha
       - dotnet publish -c release -o ./build_output Lvmendes.Adm.ApiAdm/Lvmendes.Adm.ApiAdm.csproj
-      - aws cloudformation package \
-        --template-file template.yml \
-        --s3-bucket recreioquentinha \
-        --output-template-file outputtemplate.yml \
-        --debug
+      - aws cloudformation package --debug --template-file template.yml --s3-bucket recreioquentinha --output-template-file outputtemplate.yml
+        
       
 
 artifacts:
