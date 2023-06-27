@@ -1,4 +1,6 @@
 ﻿version: 0.2
+env:
+    shell: bash
 phases:
   pre_build:
     commands:
