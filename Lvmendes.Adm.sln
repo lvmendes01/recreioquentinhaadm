@@ -60,8 +60,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elastic", "Elastic", "{1E7D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4ED64F5C-811B-4B1B-892E-5D55292E779B}"
 	ProjectSection(SolutionItems) = preProject
-		appspec.yml = appspec.yml
 		buildspec.yml = buildspec.yml
+		template.yml = template.yml
 	EndProjectSection
 EndProject
 Global
