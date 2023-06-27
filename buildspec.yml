@@ -9,29 +9,7 @@ phases:
       - echo Build started on `date`
       - export BUCKET=recreioquentinha #or use a different bucket other than your codepipeline bucket
       - aws cloudformation package --template-file template.yml --s3-bucket $BUCKET --output-template-file outputtemplate.yml --debug
-  artifacts:
-     files:
-      - template.yml
-      - outputtemplate.yml
-   
- 
-
-#    /*version: 0.2
-#phases:
-#  pre_build:
-#    commands:
-#      - echo Restore started on `date`
-#      - dotnet restore Lvmendes.Adm.ApiAdm/Lvmendes.Adm.ApiAdm.csproj
-#  build:
-#    commands:
-#      - echo Build started on `date`
-#      - export BUCKET=recreioquentinha #or use a different bucket other than your codepipeline bucket
-#      - dotnet publish -c release -o ./build_output Lvmendes.Adm.ApiAdm/Lvmendes.Adm.ApiAdm.csproj
-#      - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template template-export.json
-#artifacts:
-#  files:
-#    - CodeBuild-Lvmendes/build_output/**/*
-#    - scripts/**/*
-#    - appspec.yml
-   
-# */
+artifacts:
+    files:
+     - template.yml
+     - outputtemplate.yml   
